@@ -1,7 +1,13 @@
 const { PrismaClient } = require("@prisma/client");
+const { UserSeeder } = require("./databaseSeeder");
+
 const prisma = new PrismaClient();
 
-const main = async () => {};
+const main = async () => {
+  await prisma.users.create({
+    data: UserSeeder,
+  });
+};
 
 main()
   .catch((error) => {

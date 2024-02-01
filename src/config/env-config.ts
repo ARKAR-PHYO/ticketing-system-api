@@ -8,3 +8,5 @@ export const SERVER_DOMAIN = process.env.SERVER_DOMAIN || "localhost";
 
 export const CLIENT_PORT = process.env.CLIENT_PORT || 3000;
 export const CLIENT_DOMAIN = process.env.CLIENT_DOMAIN || "localhost";
+
+export const JWT_SECRET = process.env.JWT_SECRET || "JWT_SECRET";
