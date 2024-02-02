@@ -3,6 +3,7 @@ import express from "express";
 import { SERVER_DOMAIN, SERVER_PORT } from "./config/env-config";
 // Routers
 import { AuthRouter } from "./routers/AuthRouter";
+import { RoleRouter } from "./routers/RoleRouter";
 
 const app = express();
 app.use(express.json());
@@ -24,3 +25,4 @@ app.listen(SERVER_PORT, () => {
  * API ROUTES
  */
 app.use("/api/auth", AuthRouter);
+app.use("/api/role", RoleRouter);

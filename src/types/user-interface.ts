@@ -8,4 +8,5 @@ export interface UserInterface {
   profileImage?: string;
   createdAt?: string;
   updatedAt?: string;
+  roleName?: string;
 }

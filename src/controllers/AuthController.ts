@@ -16,8 +16,10 @@ export async function Signin(req: Request, res: Response, next: NextFunction) {
         email: true,
         password: true,
         mobileNumber: true,
+        roleName: true,
       },
     });
+
     if (!user) {
       res.status(404).json({
         statusCode: 404,
@@ -37,6 +39,7 @@ export async function Signin(req: Request, res: Response, next: NextFunction) {
       email: user.email,
       password: user.password,
       mobileNumber: user.mobileNumber,
+      roleName: user.roleName,
     });
     if (accessToken) {
       const { password, ...others } = user;

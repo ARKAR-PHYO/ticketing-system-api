@@ -6,12 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Users {
-  id           String   @id @unique @default(uuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   fullName     String
   userName     String   @unique
   email        String
@@ -20,4 +20,20 @@ model Users {
   profileImage String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  // RELATIONS
+  roleName String
+  role     Role   @relation(fields: [roleName], references: [name])
+}
+
+model Role {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  description String?
+  permission  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  // RELATIONS
+  user Users[]
 }
