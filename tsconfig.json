@@ -32,6 +32,10 @@
   },
   "include": [
     "src/**/*.ts",
+    "src/types/express/index.d.ts"
+  ],
+  "files": [
+    "src/types/express/index.d.ts"
   ],
   "exclude": [
     "node_modules"
