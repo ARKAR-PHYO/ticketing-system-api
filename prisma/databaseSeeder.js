@@ -10,6 +10,20 @@ const RoleSeeder = {
       update: true,
       delete: true,
     },
+    {
+      title: "user management",
+      create: true,
+      read: true,
+      update: true,
+      delete: true,
+    },
+    {
+      title: "role permission management",
+      create: true,
+      read: true,
+      update: true,
+      delete: true,
+    },
   ]),
 };
 
