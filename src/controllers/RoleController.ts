@@ -63,3 +63,156 @@ export async function GetRole(req: Request, res: Response) {
     });
   }
 }
+
+export async function CreateRole(req: Request, res: Response) {
+  try {
+    const role = await prisma.role.create({
+      data: {
+        name: req.body.name,
+        description: req.body.description,
+        permission: JSON.stringify(req.body.permission),
+      },
+    });
+    if (role) {
+      res.status(201).json({
+        statusCode: 201,
+        message: "Role has been created",
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      statusCode: 500,
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+}
+
+export async function UpdateRole(req: Request, res: Response) {
+  try {
+    const update = await prisma.role.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        name: req.body.name,
+        description: req.body.description,
+        permission: JSON.stringify(req.body.permission),
+      },
+    });
+    if (update) {
+      res.status(200).json({
+        message: `${update.name} role has been Updated.`,
+        success: true,
+        statusCode: 200,
+      });
+    } else {
+      res.status(422).json({
+        message: `${req.body.name} role update failed.`,
+        success: false,
+        statusCode: 422,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      statusCode: 500,
+    });
+  }
+}
+
+export async function DeleteRole(req: Request, res: Response) {
+  try {
+    const del = await prisma.role.delete({
+      where: {
+        id: req.params.name,
+      },
+    });
+    if (del) {
+      res.status(200).json({
+        message: `${del.name} role has been deleted.`,
+        success: true,
+        statusCode: 200,
+      });
+    } else {
+      res.status(422).json({
+        message: `${req.body.name} role delete failed.`,
+        success: false,
+        statusCode: 422,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      success: false,
+      statusCode: 500,
+    });
+  }
+}
+
+// ----------------------------------------------------------------------
+
+export async function RoleSearchMany(req: Request, res: Response) {
+  try {
+    const searchRoles = await RoleSearchManyParams(req.body.filters);
+    res.status(200).send({
+      success: true,
+      message: "Success",
+      statusCode: 200,
+      data: searchRoles,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      statusCode: 500,
+      success: false,
+    });
+  }
+}
+
+export async function RoleSearch(req: Request, res: Response) {
+  try {
+    const searcRole = await RoleSearchParams(req.body.filters);
+    res.status(200).send({
+      success: true,
+      message: "Success",
+      statusCode: 200,
+      data: searcRole,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      statusCode: 500,
+      success: false,
+    });
+  }
+}
+
+// ----------------------------------------------------------------------
+// COMMON FUNCTIONS
+
+export async function RoleSearchManyParams(searchParams: any) {
+  try {
+    const searchRoles = await prisma.role.findMany({
+      ...searchParams,
+    });
+    return searchRoles;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function RoleSearchParams(searchParams: any) {
+  try {
+    const searchRole = await prisma.role.findFirst({
+      ...searchParams,
+    });
+    return searchRole;
+  } catch (error) {
+    return error;
+  }
+}
