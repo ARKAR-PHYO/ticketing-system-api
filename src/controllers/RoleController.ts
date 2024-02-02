@@ -1,6 +1,39 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 
+export async function GetRoles(req: Request, res: Response) {
+  try {
+    const roles = await prisma.role.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        user: true,
+      },
+    });
+    if (roles) {
+      res.status(200).json({
+        success: true,
+        message: "success",
+        statusCode: 200,
+        data: roles,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "Role Not Found",
+        statusCode: 404,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      statusCode: 500,
+      success: false,
+    });
+  }
+}
+
 export async function GetRole(req: Request, res: Response) {
   try {
     const get = await prisma.role.findFirst({
@@ -29,36 +62,4 @@ export async function GetRole(req: Request, res: Response) {
       message: "Internal Server Error",
     });
   }
-  // try {
-  //   console.log("req.body ==>", req.body);
-
-  //   const role = await prisma.role.findFirst({
-  //     where: {
-  //       name: req.body.name,
-  //     },
-  //     include: {
-  //       user: true,
-  //     },
-  //   });
-  //   if (role) {
-  //     res.status(200).json({
-  //       statusCode: 200,
-  //       success: true,
-  //       message: "Success",
-  //       role: { ...role, permission: JSON.parse(role.permission) },
-  //     });
-  //   } else {
-  //     res.status(404).json({
-  //       statusCode: 404,
-  //       message: "Role Not Found",
-  //       success: false,
-  //     });
-  //   }
-  // } catch (error) {
-  //   res.status(500).json({
-  //     statusCode: 500,
-  //     message: "Internal Server Error.",
-  //     success: false,
-  //   });
-  // }
 }

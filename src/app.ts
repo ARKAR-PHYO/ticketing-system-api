@@ -4,6 +4,7 @@ import { SERVER_DOMAIN, SERVER_PORT } from "./config/env-config";
 // Routers
 import { AuthRouter } from "./routers/AuthRouter";
 import { RoleRouter } from "./routers/RoleRouter";
+import { UserRouter } from "./routers/UserRouter";
 
 const app = express();
 app.use(express.json());
@@ -26,3 +27,4 @@ app.listen(SERVER_PORT, () => {
  */
 app.use("/api/auth", AuthRouter);
 app.use("/api/role", RoleRouter);
+app.use("/api/user", UserRouter);
