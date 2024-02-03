@@ -24,6 +24,13 @@ const RoleSeeder = {
       update: true,
       delete: true,
     },
+    {
+      title: "project management",
+      create: true,
+      read: true,
+      update: true,
+      delete: true,
+    },
   ]),
 };
 
