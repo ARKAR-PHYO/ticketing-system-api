@@ -37,3 +37,16 @@ model Role {
   // RELATIONS
   user Users[]
 }
+
+enum Privacies {
+  private
+  public
+}
+
+model Project {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+}
