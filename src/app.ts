@@ -6,6 +6,7 @@ import { AuthRouter } from "./routers/AuthRouter";
 import { RoleRouter } from "./routers/RoleRouter";
 import { UserRouter } from "./routers/UserRouter";
 import { ProjectRouter } from "./routers/ProjectRouter";
+import { TicketRouter } from "./routers/TicketRouter";
 
 const app = express();
 app.use(express.json());
@@ -30,3 +31,4 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/role", RoleRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/project", ProjectRouter);
+app.use("/api/ticket", TicketRouter);

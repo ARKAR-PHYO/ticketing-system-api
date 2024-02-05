@@ -22,8 +22,13 @@ model Users {
   updatedAt    DateTime @updatedAt
 
   // RELATIONS
-  roleName String
-  role     Role   @relation(fields: [roleName], references: [name])
+  roleName               String
+  role                   Role     @relation(fields: [roleName], references: [name])
+  // ticketsAssigned     Ticket[] @relation("responsiblePerson")
+  ticketsResponsibleFor  Ticket[] @relation("TicketResponsiblePerson")
+  ticketsCreated         Ticket[] @relation("TicketCreatedBy")
+  ticketParticipantIds   String[] @db.ObjectId
+  ticketsParticipatingIn Ticket[] @relation(fields: [ticketParticipantIds], references: [id])
 }
 
 model Role {
@@ -49,4 +54,33 @@ model Project {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
+
+  tickets Ticket[] @relation("TicketProject")
+}
+
+enum TicketStatus {
+  pending
+  on_going
+  completed
+}
+
+model Ticket {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  ticketNumber String
+  title        String
+  body         String?
+  status       TicketStatus @default(pending)
+  deadline     String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
+
+  // RELATIONS
+  project             Project  @relation("TicketProject", fields: [projectId], references: [id])
+  projectId           String   @db.ObjectId
+  responsiblePerson   Users    @relation("TicketResponsiblePerson", fields: [responsiblePersonId], references: [id])
+  responsiblePersonId String   @db.ObjectId
+  createdBy           Users    @relation("TicketCreatedBy", fields: [createdById], references: [id])
+  createdById         String   @db.ObjectId
+  participants        Users[]  @relation(fields: [participantIds], references: [id])
+  participantIds      String[] @db.ObjectId
 }
