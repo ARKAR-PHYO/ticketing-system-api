@@ -49,4 +49,19 @@ const UserSeeder = {
   mobileNumber: "09123456789",
 };
 
-module.exports = { UserSeeder: UserSeeder, RoleSeeder: RoleSeeder };
+const Projects = [
+  {
+    name: "Interview Process",
+    description: "Project for interview process",
+  },
+  {
+    name: "Recruit Process",
+    description: "Project for recruit process",
+  },
+];
+
+module.exports = {
+  UserSeeder: UserSeeder,
+  RoleSeeder: RoleSeeder,
+  ProjectsSeeder: Projects,
+};

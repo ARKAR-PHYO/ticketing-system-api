@@ -7,6 +7,7 @@ import { RoleRouter } from "./routers/RoleRouter";
 import { UserRouter } from "./routers/UserRouter";
 import { ProjectRouter } from "./routers/ProjectRouter";
 import { TicketRouter } from "./routers/TicketRouter";
+import { FCMRouter } from "./routers/FCMRouter";
 
 const app = express();
 app.use(express.json());
@@ -32,3 +33,4 @@ app.use("/api/role", RoleRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/project", ProjectRouter);
 app.use("/api/ticket", TicketRouter);
+app.use("/api/fcm", FCMRouter);
