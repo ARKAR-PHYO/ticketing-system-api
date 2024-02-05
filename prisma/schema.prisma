@@ -23,12 +23,14 @@ model Users {
 
   // RELATIONS
   roleName               String
-  role                   Role     @relation(fields: [roleName], references: [name])
+  role                   Role           @relation(fields: [roleName], references: [name])
   // ticketsAssigned     Ticket[] @relation("responsiblePerson")
-  ticketsResponsibleFor  Ticket[] @relation("TicketResponsiblePerson")
-  ticketsCreated         Ticket[] @relation("TicketCreatedBy")
-  ticketParticipantIds   String[] @db.ObjectId
-  ticketsParticipatingIn Ticket[] @relation(fields: [ticketParticipantIds], references: [id])
+  ticketsResponsibleFor  Ticket[]       @relation("TicketResponsiblePerson")
+  ticketsCreated         Ticket[]       @relation("TicketCreatedBy")
+  ticketParticipantIds   String[]       @db.ObjectId
+  ticketsParticipatingIn Ticket[]       @relation("TicketParticipants", fields: [ticketParticipantIds], references: [id])
+  FcmTokens              FcmToken[]
+  Notifications          Notification[]
 }
 
 model Role {
@@ -81,6 +83,25 @@ model Ticket {
   responsiblePersonId String   @db.ObjectId
   createdBy           Users    @relation("TicketCreatedBy", fields: [createdById], references: [id])
   createdById         String   @db.ObjectId
-  participants        Users[]  @relation(fields: [participantIds], references: [id])
+  participants        Users[]  @relation("TicketParticipants", fields: [participantIds], references: [id])
   participantIds      String[] @db.ObjectId
+}
+
+model FcmToken {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  fcmToken  String
+  userToken String
+
+  userId String? @db.ObjectId
+  user   Users?  @relation(fields: [userId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  body      String
+  isRead    Boolean
+  createdAt DateTime @default(now())
+  userId    String?  @db.ObjectId
+  user      Users?   @relation(fields: [userId], references: [id])
 }

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../lib/prisma";
 import moment from "moment";
+import NotificationController from "./Notification/NotificationController";
 
 export async function GenerateTicketNumber(req: Request, res: Response) {
   try {
@@ -87,7 +88,7 @@ export async function GetAllTickets(req: Request, res: Response) {
 export async function CreateTicket(req: Request, res: Response) {
   try {
     const { id, createdById, status, participantIds, ...others } = req.body;
-    await prisma.ticket.create({
+    const ticket = prisma.ticket.create({
       data: {
         ...others,
         status: "pending",
@@ -97,6 +98,42 @@ export async function CreateTicket(req: Request, res: Response) {
         ),
       },
     });
+    await prisma.users.update({
+      where: {
+        id: req.user.id,
+      },
+      data: {
+        ticketParticipantIds: {
+          push: participantIds.map(
+            (participant: { id: string }) => participant.id
+          ),
+        },
+      },
+    });
+
+    const txn = await prisma.$transaction([ticket]);
+    await prisma.users.update({
+      where: {
+        id: req.user.id,
+      },
+      data: {
+        ticketParticipantIds: {
+          push: txn[0].id,
+        },
+      },
+    });
+
+    const noti = new NotificationController({
+      body: {
+        type: "ticketReview",
+        for: "participants",
+        ticketNumber: txn[0].ticketNumber,
+      },
+      participantIds: txn[0].participantIds,
+      userToken: req.userToken ? req.userToken : "",
+    });
+
+    await noti.puthToParticipants();
 
     res.status(201).json({
       statusCode: 201,
