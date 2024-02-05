@@ -31,6 +31,13 @@ const RoleSeeder = {
       update: true,
       delete: true,
     },
+    {
+      title: "ticket management",
+      create: true,
+      read: true,
+      update: true,
+      delete: true,
+    },
   ]),
 };
 
