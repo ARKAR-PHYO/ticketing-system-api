@@ -28,7 +28,7 @@ Copy .env.example
 cp .env.example .env
 ```
 
-💡 For SECURITY REASON, I've included the actual env file by email. It contains MongoDB Cluster and Firebase related keys.
+💡 For SECURITY REASON, I've included the actual env file by GoogleDrive. It contains MongoDB Cluster and Firebase related keys.
 
 Prisma migrate
 
